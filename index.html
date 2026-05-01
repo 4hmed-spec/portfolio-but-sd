@@ -175,14 +175,19 @@ body {
 
 /* Compétences grid inside UE overlay */
 .comp-grid { display: flex; flex-direction: column; gap: 2px; margin-top: 48px; }
+.comp-hint { font-size: 0.74rem; font-weight: 600; color: #555; letter-spacing: .09em; text-transform: uppercase; margin-bottom: 16px; margin-top: 8px; display: flex; align-items: center; gap: 10px; }
+.comp-hint span { white-space: nowrap; }
+.comp-hint::before { content: ''; display: inline-block; width: 18px; height: 1.5px; background: #999; flex-shrink: 0; border-radius: 2px; }
+.comp-hint::after { content: ''; display: inline-block; flex: 1; height: 1px; background: #e5e5e5; border-radius: 2px; }
 .comp-card {
   background: var(--white); border: 1px solid var(--rule); padding: 32px 36px;
-  cursor: pointer; transition: border-color .2s, background .2s;
+  cursor: pointer; transition: border-color .25s, background .25s, box-shadow .25s, transform .25s;
   display: grid; grid-template-columns: 72px 1fr auto;
   align-items: center; gap: 32px;
 }
-.comp-card:hover { border-color: #aaa; background: #fafaf8; }
-.comp-card:hover .comp-arrow { transform: translate(3px,-3px); }
+.comp-card:hover { border-color: #222; background: #fafaf8; box-shadow: 0 4px 18px rgba(0,0,0,0.07); transform: translateY(-2px); }
+.comp-card:hover .comp-arrow { transform: translate(4px,-4px); color: var(--text); }
+.comp-card:hover .comp-num { color: var(--text); }
 .comp-num {
   font-family: var(--font-h); font-size: 2rem; font-weight: 800;
   letter-spacing: -0.04em; color: var(--rule); line-height: 1;
@@ -217,6 +222,12 @@ body {
   padding: 18px 20px; border-radius: 4px;
   overflow-x: auto; line-height: 1.7;
   margin: 8px 0 12px; white-space: pre;
+}
+.modal-code-desc {
+  font-size: 0.84rem; color: #555; line-height: 1.7;
+  background: #f4f8f4; border-left: 3px solid #1a7a1a;
+  padding: 10px 14px; border-radius: 0 4px 4px 0;
+  margin-bottom: 10px; font-style: italic;
 }
 .modal-formula {
   font-family: 'Courier New', monospace; font-size: 0.82rem;
@@ -311,8 +322,14 @@ body {
 .modal-close { background: none; border: 1px solid var(--rule); border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: .85rem; color: var(--muted); flex-shrink: 0; transition: all .18s; }
 .modal-close:hover { border-color: var(--text); color: var(--text); }
 .modal-sec { font-size: 0.68rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-top: 22px; margin-bottom: 8px; }
+.modal-sec-comp { font-size: 0.72rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; color: var(--text); margin-top: 28px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.modal-sec-comp::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+.modal-comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.modal-comp-item { display: flex; align-items: flex-start; gap: 10px; padding: 11px 14px; background: #f9f8f6; border: 1px solid var(--rule); border-radius: 4px; font-size: 0.82rem; color: #333; line-height: 1.45; font-weight: 400; }
+.modal-comp-item::before { content: '✓'; font-size: 0.72rem; font-weight: 700; color: #555; flex-shrink: 0; margin-top: 1px; }
 .modal-p { font-size: 0.88rem; color: #555; line-height: 1.75; margin-bottom: 8px; }
 .modal-p strong { color: var(--text); font-weight: 500; }
+.modal-p a { color: #1a7a1a; text-decoration: underline; cursor: pointer; pointer-events: auto; }
 .modal-tools { display: flex; flex-wrap: wrap; gap: 5px; }
 .modal-tool { font-size: 0.68rem; padding: 3px 9px; border: 1px solid var(--rule); border-radius: 50px; color: var(--muted); }
 .level-chip { font-size: 0.76rem; font-weight: 600; padding: 4px 13px; border-radius: 50px; border: 1px solid; display: inline-block; margin-top: 6px; }
@@ -392,7 +409,8 @@ body {
     <div style="margin-bottom:56px">
       <div class="ov-label">BUT Science des Données · IUT de Roubaix</div>
       <h2 class="ov-title" style="margin-bottom:24px">Les 4 unités<br>d'enseignement</h2>
-      <p class="ov-lead" style="max-width:560px">Le BUT Science des données s'articule autour de 4 compétences fondamentales. Chacune couvre un domaine clé de la science des données, de la collecte jusqu'à la communication des résultats.</p>
+      <p class="ov-lead" style="max-width:560px">Le BUT Science des données s'articule autour de 4 compétences fondamentales. Chacune couvre un domaine clé de la science des données, de la collecte au traitement jusqu'à la communication des résultats.
+Cliquez sur une unité d'enseignement pour découvrir son contenu.</p>
     </div>
     <div class="ue-grid">
 
@@ -408,7 +426,7 @@ body {
         <div class="ue-num">UE 02</div>
         <svg width="48" height="48" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 34 C8 34 10 8 14 8 C18 8 18 26 22 26 C26 26 26 16 30 16 C32 16 33 20 34 20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/><line x1="4" y1="34" x2="34" y2="34" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="4" y1="4" x2="4" y2="34" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
         <div class="ue-title">Analyser</div>
-        <div class="ue-desc">Tests d'hypothèses, ACP, sondage, inférence statistique.</div>
+        <div class="ue-desc">Tests d'hypothèses, Méthodes factorielles, Classification, inférence statistique.</div>
         <div class="ue-arrow">↗</div>
       </div>
 
@@ -424,7 +442,7 @@ body {
         <div class="ue-num">UE 04</div>
         <svg width="48" height="48" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 32 Q8 32 10 26 Q13 16 19 16 Q25 16 28 26 Q30 32 34 32" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/><line x1="19" y1="14" x2="19" y2="34" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2" opacity="0.4"/><line x1="4" y1="34" x2="34" y2="34" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
         <div class="ue-title">Modéliser</div>
-        <div class="ue-desc">Estimateurs, variances, réduction dimensionnelle, modélisation objet.</div>
+        <div class="ue-desc">Estimateurs, variances, réduction, modélisation.</div>
         <div class="ue-arrow">↗</div>
       </div>
 
@@ -460,7 +478,7 @@ body {
           <p class="award-desc" style="color: rgb(4, 30, 214)">500 000 lignes de données publiques pour proposer des solutions d'optimisation des infrastructures de recharge électrique. (Power BI, SAS, Excel), présentation devant jury, 1ère place remportée.</p>
         </div>
 
-        <button class="parcours-btn" onclick="openParcours()" style="background-color: rgb(85, 0, 237)">Mon parcours →</button>
+        <button class="parcours-btn" onclick="openParcours()" style="background-color: rgb(85, 0, 237); width: 443px">Mon parcours →</button>
 
         <div class="skills-row">
           <span class="skill">Python</span>
@@ -524,8 +542,9 @@ body {
     <div class="ov-label">UE 01</div>
     <h2 class="ov-title" style="margin-bottom:20px">Traiter les données<br>à des fins décisionnelles</h2>
     <p class="ov-lead" style="max-width:620px">Transformer des données brutes en informations exploitables : reporting, systèmes décisionnels, bases de données avancées et automatisation statistique.</p>
-    <div class="ue-section-hd">Compétences</div>
+    <div class="ue-section-hd" style="font-size: 32px; color: rgb(50, 40, 40)">Compétences</div>
     <hr class="rule">
+    <p class="comp-hint"><span>Cliquez sur une compétence pour découvrir des exemples d'application</span></p>
     <div class="comp-grid">
       <div class="comp-card" onclick="openModal('t1')">
         <div class="comp-num">C01</div>
@@ -570,6 +589,7 @@ body {
     <p class="ov-lead" style="max-width:620px">Mobiliser les outils mathématiques et statistiques pour interpréter des données, identifier des structures, valider des hypothèses et produire des prévisions rigoureuses.</p>
     <div class="ue-section-hd">Compétences</div>
     <hr class="rule">
+    <p class="comp-hint"><span>Cliquez sur une compétence pour découvrir des exemples d'application</span></p>
     <div class="comp-grid">
       <div class="comp-card" onclick="openModal('a1')">
         <div class="comp-num">C01</div>
@@ -584,8 +604,8 @@ body {
         <div class="comp-num">C02</div>
         <div class="comp-body">
           <div class="comp-title">Classifier des populations en groupes homogènes</div>
-          <div class="comp-desc">Regrouper des individus selon leurs similarités en mobilisant des méthodes de classification automatique (CAH, k-means) pour faire émerger des profils distincts.</div>
-          <div class="comp-tags"><span class="comp-tag tag-ressource">RES 4.03 — Classification automatique</span><span class="comp-tag">CAH</span><span class="comp-tag">k-means</span></div>
+          <div class="comp-desc">Regrouper des individus selon leurs similarités en mobilisant des méthodes de classification automatique (CAH, proba) pour faire émerger des profils distincts.</div>
+          <div class="comp-tags"><span class="comp-tag tag-ressource">RES 4.03 — Classification automatique</span><span class="comp-tag">CAH</span><span class="comp-tag">proba</span></div>
         </div>
         <div class="comp-arrow">↗</div>
       </div>
@@ -594,7 +614,7 @@ body {
         <div class="comp-body">
           <div class="comp-title">Prévoir l'évolution de données temporelles</div>
           <div class="comp-desc">Identifier tendances et saisonnalités dans une série chronologique, construire un modèle prédictif et évaluer ses performances sur données réelles.</div>
-          <div class="comp-tags"><span class="comp-tag tag-sae">SAÉ 3.03 — Séries temporelles</span><span class="comp-tag">R / Python</span><span class="comp-tag">Port d'Anvers</span></div>
+          <div class="comp-tags"><span class="comp-tag tag-sae">SAÉ 3.03 — Séries temporelles</span><span class="comp-tag">Macro SAS</span><span class="comp-tag">Port d'Anvers</span></div>
         </div>
         <div class="comp-arrow">↗</div>
       </div>
@@ -614,13 +634,14 @@ body {
     <p class="ov-lead" style="max-width:620px">Communiquer efficacement à l'écrit et à l'oral, en français et en anglais, restituer des analyses et s'inscrire dans un contexte organisationnel et stratégique.</p>
     <div class="ue-section-hd">Compétences</div>
     <hr class="rule">
+    <p class="comp-hint"><span>Cliquez sur une compétence pour découvrir des exemples d'application</span></p>
     <div class="comp-grid">
       <div class="comp-card" onclick="openModal('v1')">
         <div class="comp-num">C01</div>
         <div class="comp-body">
           <div class="comp-title">Communiquer en anglais à l'écrit et à l'oral</div>
           <div class="comp-desc">Rédiger des mails professionnels, corriger des échanges formels et participer à des débats oraux en anglais pour développer une aisance en contexte international.</div>
-          <div class="comp-tags"><span class="comp-tag tag-ressource">R3.07 — Anglais professionnel</span><span class="comp-tag">Anglais B2</span><span class="comp-tag">Communication</span></div>
+          <div class="comp-tags"><span class="comp-tag tag-ressource">R4.04 — Anglais professionnel</span><span class="comp-tag">Anglais B2</span><span class="comp-tag">Communication</span></div>
         </div>
         <div class="comp-arrow">↗</div>
       </div>
@@ -629,7 +650,7 @@ body {
         <div class="comp-body">
           <div class="comp-title">Restituer une analyse en contexte professionnel</div>
           <div class="comp-desc">Synthétiser des travaux académiques ou des rapports de stage et les présenter à l'oral en équipe, en respectant les codes de la communication organisationnelle.</div>
-          <div class="comp-tags"><span class="comp-tag tag-ressource">R3.08 — Communication organisationnelle</span><span class="comp-tag">Présentation orale</span></div>
+          <div class="comp-tags"><span class="comp-tag tag-ressource">R4.05 — Communication organisationnelle</span><span class="comp-tag">Présentation orale</span></div>
         </div>
         <div class="comp-arrow">↗</div>
       </div>
@@ -655,14 +676,15 @@ body {
   <div class="ov-body">
     <div class="ov-label">UE 04</div>
     <h2 class="ov-title" style="margin-bottom:20px">Modéliser les données<br>dans un cadre statistique</h2>
-    <p class="ov-lead" style="max-width:620px">Construire des modèles formels pour représenter des populations, estimer des paramètres, réduire la dimension de données complexes et évaluer la fiabilité des résultats.</p>
+    <p class="ov-lead" style="max-width:620px">Construire des modèles pour représenter des populations, estimer des paramètres, effectuer des changements de variables complexes et évaluer la fiabilité de nos résultats.</p>
     <div class="ue-section-hd">Compétences</div>
     <hr class="rule">
+    <p class="comp-hint"><span>Cliquez sur une compétence pour découvrir des exemples d'application</span></p>
     <div class="comp-grid">
       <div class="comp-card" onclick="openModal('m1')">
         <div class="comp-num">C01</div>
         <div class="comp-body">
-          <div class="comp-title">Modéliser des données dans un cadre statistique formel</div>
+          <div class="comp-title">Modéliser des données dans un cadre statistique</div>
           <div class="comp-desc">Construire un modèle de régression linéaire multiple, interpréter ses coefficients et évaluer sa qualité prédictive sur des données réelles.</div>
           <div class="comp-tags"><span class="comp-tag tag-sae">SAÉ 4.EMS.01 — Modélisation statistique</span><span class="comp-tag">Régression</span><span class="comp-tag">R</span></div>
         </div>
@@ -703,7 +725,7 @@ const MODAL_DATA = {
     imgcap2:'Script de chargement et nettoyage Qlik — Étape 1',
     tools:['Qlik','Power BI','DAX','Nettoyage données']},
   t2:{ref:'R3.03 — Technologies web',ttl:'Structurer et mettre en forme une page web',lv:'correct',
-    desc:`<p class="modal-p">Cette ressource (Mme Belkouch) introduit les fondamentaux du développement web. J'ai appris à <strong>organiser correctement les éléments d'une page HTML</strong> (titres, paragraphes, sections) afin de hiérarchiser l'information, puis à la mettre en forme avec CSS pour améliorer la lisibilité, la cohérence visuelle et l'ergonomie.</p><p class="modal-p">Réalisation concrète : création et déploiement d'un site personnel CV sur <strong>GitHub Pages</strong> — <em>4hmed-spec.github.io/CV_AhmedTERIR/</em>.</p>`,
+    desc:`<p class="modal-p">Cette ressource (Mme Belkouch) introduit les fondamentaux du développement web. J'ai appris à <strong>organiser correctement les éléments d'une page HTML</strong> (titres, paragraphes, sections) afin de hiérarchiser l'information, puis à la mettre en forme avec CSS pour améliorer la lisibilité, la cohérence visuelle et l'ergonomie.</p><p class="modal-p">Réalisation concrète : création et déploiement d'un site personnel CV sur <strong>GitHub Pages</strong> — <a href="https://4hmed-spec.github.io/CV_AhmedTERIR/" target="_blank" style="color:#1a7a1a;text-decoration:underline;cursor:pointer">4hmed-spec.github.io/CV_AhmedTERIR/</a>.</p>`,
     comp:`<p class="modal-p">Structurer le contenu en HTML · Mettre en forme avec CSS · Créer et déployer une page web fonctionnelle et accessible.</p>`,
     tools:['HTML','CSS','GitHub Pages','Mise en page']},
   t3:{ref:'R3.11 — Complément informatique base de données',ttl:'Automatiser des traitements via SQL avancé',lv:'moyen',
@@ -730,7 +752,7 @@ DEALLOCATE c_client;`,
     comp:`<p class="modal-p">Utiliser PROC SQL · Structurer des scripts SAS clairs · Automatiser des traitements répétitifs.</p>`,
     tools:['SAS','PROC SQL','Macro-variables','Macro-programmes']},
   t5:{ref:'R3.03 — Technologies web',ttl:'Site web CV — HTML & CSS',lv:'correct',
-    desc:`<p class="modal-p">Cette ressource (Mme Belkouch) introduit les bases du web. J'ai créé un site personnel en HTML et CSS, déployé sur <strong>GitHub Pages</strong> — <em>4hmed-spec.github.io/CV_AhmedTERIR/</em>.</p>`,
+    desc:`<p class="modal-p">Cette ressource (Mme Belkouch) introduit les bases du web. J'ai créé un site personnel en HTML et CSS, déployé sur <strong>GitHub Pages</strong> — <a href="https://4hmed-spec.github.io/CV_AhmedTERIR/" target="_blank" style="color:#1a7a1a;text-decoration:underline">4hmed-spec.github.io/CV_AhmedTERIR/</a>.</p>`,
     comp:`<p class="modal-p">Structurer le contenu en HTML · Mettre en forme avec CSS · Créer et déployer une page web fonctionnelle.</p>`,
     tools:['HTML','CSS','GitHub Pages']},
   t6:{ref:'R3.EMS.12 — Complément informatique POO',ttl:'Programmation orientée objet — Python',lv:'correct',
@@ -742,17 +764,17 @@ DEALLOCATE c_client;`,
     comp:`<p class="modal-p">Préparer des données par centrage et réduction · Calculer et interpréter les valeurs propres · Projeter des individus sur des axes factoriels et interpréter les résultats.</p>`,
     tools:['ACP','Algèbre linéaire','Matrices','Valeurs propres','Axes factoriels']},
   a2:{ref:'RES 4.03 — Classification automatique',ttl:'Classifier des populations en groupes homogènes',lv:'correct',
-    desc:`<p class="modal-p">Cette ressource porte sur les méthodes de <strong>classification automatique</strong> permettant de regrouper des individus selon leurs similarités. J'ai mis en œuvre deux approches complémentaires : la <strong>Classification Ascendante Hiérarchique (CAH)</strong>, qui construit un dendrogramme pour visualiser les regroupements, et l'algorithme des <strong>k-means</strong>, qui partitionne les données en k groupes homogènes.</p><p class="modal-p">L'objectif est de faire émerger des profils distincts à partir de données non étiquetées, en choisissant les bons critères de distance et en interprétant les classes obtenues.</p>`,
+    desc:`<p class="modal-p">Cette ressource porte sur les méthodes de <strong>classification automatique</strong> permettant de regrouper des individus selon leurs similarités. J'ai mis en œuvre deux approches complémentaires : la <strong>Classification Ascendante Hiérarchique (CAH)</strong>, qui construit un dendrogramme pour visualiser les regroupements, on partitionne les données en k groupes homogènes.</p><p class="modal-p">L'objectif est de faire émerger des profils distincts à partir de données brutes, en choisissant les bons critères de distance et en interprétant les classes obtenues.</p>`,
     comp:`<p class="modal-p">Choisir une méthode de classification adaptée · Construire et interpréter un dendrogramme · Déterminer le nombre optimal de classes · Caractériser et nommer les profils obtenus.</p>`,
-    tools:['CAH','k-means','Dendrogramme','R / Python','Distances']},
+    tools:['CAH','proba','Dendrogramme','Macro SAS','Distances']},
   a3:{ref:'SAÉ 3.03 — Description et prévision de données temporelles',ttl:'Description et prévision de données temporelles',lv:'correct',
-    desc:`<p class="modal-p">Supervisé par M. Renard, cette SAÉ vise à mobiliser les méthodes d'analyse, de visualisation et de modélisation des <strong>séries temporelles</strong>. Le Port d'Anvers-Bruges est le deuxième plus grand port d'Europe et l'un des principaux hubs logistiques mondiaux. Chaque année, des centaines de millions de tonnes de marchandises et des milliers de navires traversent ce port.</p><p class="modal-p">Dans ce contexte, la capacité à comprendre les dynamiques du trafic portuaire, à identifier les tendances de long terme ainsi que les variations saisonnières (hebdomadaires, mensuelles, annuelles) constitue un enjeu central pour le pilotage des activités portuaires.</p>`,
+    desc:`<p class="modal-p">Supervisée par M. Renard, cette SAÉ porte sur l'analyse et la prévision du trafic du <strong>Port d'Anvers-Bruges</strong> à partir de données réelles de tonnage. L'objectif était de décomposer la série, modéliser ses composantes et produire des prévisions fiables.</p><p class="modal-p">Sur <strong>R Studio</strong>, j'ai utilisé les packages <code>forecast</code> et <code>ggplot2</code> pour visualiser la série, appliquer une décomposition , ajuster un modèle et évaluer ses résidus. Les prévisions pour 2025 ont été produites et comparées aux valeurs réelles.</p>`,
     comp:`<p class="modal-p">Identification de tendances et saisonnalités · Modélisation statistique des séries temporelles · Prédiction de valeurs futures · Évaluation des performances des modèles.</p>`,
     img:'assets/graph-serie-temporelle.png',
     imgcap:'Série ajustée et prévisions 2025 — Port d\'Anvers-Bruges\nEn bleu la série initiale\nEn jaune la série ajustée ainsi que la prévision pour 2025',
     tools:['R studio','Statistique','Séries temporelles','Excel']},
   v1:{ref:'R3.07 — Anglais professionnel',ttl:'Communiquer en anglais à l\'écrit et à l\'oral',lv:'bon',
-    desc:`<p class="modal-p">Cette ressource (Mme Jonckheere) s'est articulée autour de plusieurs exercices pratiques de communication professionnelle en anglais.</p><p class="modal-p"><strong>Exercice 1 — Correction de mails :</strong> à partir de mails professionnels contenant des erreurs (ton inapproprié, fautes grammaticales, formules incorrectes), j'ai identifié et corrigé chaque problème en justifiant mes choix.</p><p class="modal-p"><strong>Exercice 2 — Rédaction de mails :</strong> rédaction de mails dans des situations variées (demande d'information, réclamation client, prise de rendez-vous), en mobilisant les formules d'usage du monde professionnel anglophone.</p><p class="modal-p"><strong>Exercice 3 — Débat oral :</strong> participation à un débat structuré sur la thématique de la donnée et de la vie privée (<em>« Should companies be allowed to sell personal data ? »</em>), avec argumentation, contre-argumentation et gestion du temps de parole.</p>`,
+    desc:`<p class="modal-p">Cette ressource (Mme Jonckheere) s'est articulée autour de plusieurs exercices pratiques de communication professionnelle en anglais.</p><p class="modal-p"><strong>Exercice 1 — Correction de mails :</strong> à partir de mails professionnels contenant des erreurs (ton inapproprié, fautes grammaticales, formules incorrectes), j'ai identifié et corrigé chaque problème en justifiant mes choix.</p><p class="modal-p"><strong>Exercice 2 — Rédaction de mails :</strong> rédaction de mails dans des situations variées (demande d'information, réclamation client, prise de rendez-vous), en mobilisant les formules d'usage du monde professionnel anglophone.</p><p class="modal-p"><strong>Exercice 3 — Débat oral :</strong> participation à des débats structurés par exemple sur la thématique de la donnée et de la vie privée (<em>« Should companies be allowed to sell personal data ? »</em>), division de la classe en deux groupes chaque un defend un point de vue avec argumentation, contre-argumentation et gestion du temps de parole.</p>`,
     comp:`<p class="modal-p">Rédiger et corriger des mails professionnels en anglais · Adapter son registre au contexte · Argumenter à l'oral de façon structurée · Maîtriser les codes de la communication anglophone.</p>`,
     tools:['Anglais B2','Rédaction professionnelle','Débat oral','Correction de mails']},
   v2:{ref:'R3.08 — Communication organisationnelle',ttl:'Restituer une analyse en contexte professionnel',lv:'bon',
@@ -770,10 +792,10 @@ DEALLOCATE c_client;`,
   m1:{ref:'SAÉ 4.EMS.01 — Modélisation statistique',ttl:'Modélisation linéaire des entrées cinématographiques (PACA, 2022)',lv:'assez-bon',
     desc:`<p class="modal-p">Encadrée par Mme Herrmann, cette SAÉ pose la question suivante : <strong>peut-on prédire le nombre d'entrées cinématographiques d'un établissement en 2022</strong> à partir de ses caractéristiques (capacité, programmation, localisation) ?</p><p class="modal-p">J'ai construit un modèle de <strong>régression linéaire multiple</strong> sur les données réelles de la région Provence-Alpes-Côte d'Azur, en travaillant sur la sélection de variables, la validation des hypothèses du modèle et l'évaluation de sa qualité prédictive.</p>`,
     comp:`<p class="modal-p">Construire et interpréter un modèle de régression linéaire multiple · Sélectionner les variables explicatives pertinentes · Valider les hypothèses du modèle · Évaluer les performances prédictives.</p>`,
-    formula:'log(entrées_2022) = β₀ + β₁·séances + β₂·population_commune + β₃·semaines_activité + β₄·nb_films_sem1',
+    formula:'log(entrées_2022) = β₀ + β₁·séances + β₂·population_commune + β₃·semaines_activité + β₄·nb_films_sem1\n\n\n <span style="color:#1a7a1a;font-family:Georgia,serif;font-style:italic;font-size:0.9rem">Grace à ce modèle, il est possible de prédire, avec un certain niveau de confiance, les entrées pour 2022.</span>',
     tools:['Régression linéaire','SAS','Sélection de variables','Résidus','R²']},
   m2:{ref:'R3.EMS.10 — Techniques de sondage',ttl:'Estimer des paramètres de population par sondage',lv:'bon',
-    desc:`<p class="modal-p">Cette ressource (Mme Herrmann) porte sur la <strong>modélisation statistique par sondage</strong> : construire un cadre formel permettant de représenter une population à partir d'un échantillon. J'ai appliqué quatre plans de sondage : aléatoire simple, stratifié proportionnel, stratifié optimal et post-stratification.</p><p class="modal-p">Le travail a consisté à définir les <strong>estimateurs</strong> (moyenne, proportion, total) et à formuler rigoureusement leurs variances et intervalles de confiance à 95 % pour chaque méthode, puis à comparer leur efficacité.</p>`,
+    desc:`<p class="modal-p">Cette ressource (Mme Herrmann) porte sur la <strong>modélisation statistique par sondage</strong> : construire un cadre formel permettant de représenter une population à partir d'un échantillon. J'ai appliqué plusieurs plans de sondage par exemple : aléatoire simple, stratifié proportionnel, stratifié optimal et post-stratification.</p><p class="modal-p">Le travail a consisté à définir les <strong>estimateurs</strong> (moyenne, proportion, total) et à formuler rigoureusement leurs variances et intervalles de confiance à 95 % pour chaque méthode, puis à comparer leur efficacité.</p>`,
     comp:`<p class="modal-p">Définir et calculer des estimateurs adaptés · Formuler et comparer les variances des estimateurs · Construire des intervalles de confiance · Choisir le plan de sondage le plus efficace.</p>`,
     tools:['Estimateurs','Variances','IC 95%','Plans de sondage','Stratification']},
   m3:{ref:'R3.EMS.12 — POO Python',ttl:'Modélisation orientée objet — Python',lv:'correct',
@@ -809,15 +831,23 @@ function animateProgs(container) {
     el.style.width = (el.dataset.w || 0) + '%';
   });
 }
+function renderComp(compHtml) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = compHtml;
+  const text = tmp.textContent || '';
+  const items = text.split('·').map(s => s.trim()).filter(Boolean);
+  if (items.length === 0) return compHtml;
+  return `<div class="modal-comp-grid">${items.map(i => `<div class="modal-comp-item">${i}</div>`).join('')}</div>`;
+}
 function openModal(key) {
   const d = MODAL_DATA[key]; if (!d) return;
   document.getElementById('m-ref').textContent = d.ref;
   document.getElementById('m-ttl').textContent = d.ttl;
   document.getElementById('m-body').innerHTML = `
     <div class="modal-sec">Description</div>${d.desc}
-    <div class="modal-sec">Compétences développées</div>${d.comp}
+    <div class="modal-sec-comp">Compétences développées</div>${renderComp(d.comp)}
     ${d.formula ? `<div class="modal-sec">Modèle</div><div class="modal-formula">${d.formula}</div>` : ''}
-    ${d.code ? `<div class="modal-sec">Exemple de réalisation</div><div class="modal-code">${d.code}</div>` : ''}
+    ${d.code ? `<div class="modal-sec">Exemple de réalisation</div><div class="modal-code-desc">Ce code automatise le parcours ligne par ligne de votre liste de clients pour identifier chaque profil individuellement. Il calcule ensuite automatiquement la somme de tous leurs soldes bancaires en interrogeant la table des comptes. Enfin, il génère un rapport textuel synthétisant l'identité de chaque client et son montant total cumulé.</div><div class="modal-code">${d.code}</div>` : ''}
     ${d.img ? `<div class="modal-sec">Résultat obtenu</div><img src="${d.img}" alt="${d.imgcap||''}" style="width:100%;border-radius:4px;border:1px solid var(--rule);margin-bottom:8px;display:block">
     ${d.imgcap ? `<p style="font-size:0.72rem;color:var(--muted);letter-spacing:.04em;line-height:1.7;margin-bottom:14px">${d.imgcap.replace(/\nEn bleu /g,'<br><span style="color:#0c3fc5;font-weight:600">■</span> En bleu ').replace(/\nEn jaune /g,'<br><span style="color:#d2c10d;font-weight:600">■</span> En jaune ')}</p>` : ''}` : ''}
     ${d.img2 ? `<img src="${d.img2}" alt="${d.imgcap2||''}" style="width:100%;border-radius:4px;border:1px solid var(--rule);margin-bottom:6px;display:block"><p style="font-size:0.7rem;color:var(--muted);letter-spacing:.05em">${d.imgcap2||''}</p>` : ''}
@@ -841,3 +871,9 @@ window.addEventListener('load', () => {
 </script>
 </body>
 </html>
+
+<style id="__om-edit-overrides">
+#m-body >.modal-formula { color: rgb(0, 0, 0) !important }
+#m-body >.modal-formula >div:nth-child(2) { color: rgb(0, 0, 0) !important }
+#m-body a { color: rgb(0, 105, 255) !important }
+</style>
