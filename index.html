@@ -478,7 +478,7 @@ Cliquez sur une unité d'enseignement pour découvrir son contenu.</p>
           <p class="award-desc" style="color: rgb(4, 30, 214)">500 000 lignes de données publiques pour proposer des solutions d'optimisation des infrastructures de recharge électrique. (Power BI, SAS, Excel), présentation devant jury, 1ère place remportée.</p>
         </div>
 
-        <button class="parcours-btn" onclick="openParcours()" style="background-color: rgb(85, 0, 237); width: 443px">Mon parcours →</button>
+        <button class="parcours-btn" onclick="openParcours()" style="background-color: rgb(85, 0, 237); width: 443px; font-size: 26px">Mon parcours →</button>
 
         <div class="skills-row">
           <span class="skill">Python</span>
@@ -522,7 +522,7 @@ Cliquez sur une unité d'enseignement pour découvrir son contenu.</p>
       </div>
       <div class="tl-item tl-current">
         <div class="tl-year">2024 –</div>
-        <div class="tl-dot"></div>
+        <div class="tl-dot" style="background-color: rgb(23, 44, 208)"></div>
         <div class="tl-content">
           <div class="tl-badge">BUT Science des Données</div>
           <p class="tl-desc">Maîtriser la donnée. Ma formation actuelle. Je me spécialise dans l'exploration et la modélisation statistique pour transformer des chiffres bruts en décisions stratégiques.</p>
@@ -604,7 +604,7 @@ Cliquez sur une unité d'enseignement pour découvrir son contenu.</p>
         <div class="comp-num">C02</div>
         <div class="comp-body">
           <div class="comp-title">Classifier des populations en groupes homogènes</div>
-          <div class="comp-desc">Regrouper des individus selon leurs similarités en mobilisant des méthodes de classification automatique (CAH, proba) pour faire émerger des profils distincts.</div>
+          <div class="comp-desc">Regrouper des individus selon leurs similarités en mobilisant des méthodes de classification automatique (CAH) pour faire émerger des profils distincts.</div>
           <div class="comp-tags"><span class="comp-tag tag-ressource">RES 4.03 — Classification automatique</span><span class="comp-tag">CAH</span><span class="comp-tag">proba</span></div>
         </div>
         <div class="comp-arrow">↗</div>
@@ -764,9 +764,11 @@ DEALLOCATE c_client;`,
     comp:`<p class="modal-p">Préparer des données par centrage et réduction · Calculer et interpréter les valeurs propres · Projeter des individus sur des axes factoriels et interpréter les résultats.</p>`,
     tools:['ACP','Algèbre linéaire','Matrices','Valeurs propres','Axes factoriels']},
   a2:{ref:'RES 4.03 — Classification automatique',ttl:'Classifier des populations en groupes homogènes',lv:'correct',
-    desc:`<p class="modal-p">Cette ressource porte sur les méthodes de <strong>classification automatique</strong> permettant de regrouper des individus selon leurs similarités. J'ai mis en œuvre deux approches complémentaires : la <strong>Classification Ascendante Hiérarchique (CAH)</strong>, qui construit un dendrogramme pour visualiser les regroupements, on partitionne les données en k groupes homogènes.</p><p class="modal-p">L'objectif est de faire émerger des profils distincts à partir de données brutes, en choisissant les bons critères de distance et en interprétant les classes obtenues.</p>`,
+    desc:`<p class="modal-p">Cette ressource porte sur les méthodes de <strong>classification automatique</strong> permettant de regrouper des individus selon leurs similarités. Via <strong>SAS</strong>, j'ai mis en œuvre une <strong>Classification Ascendante Hiérarchique (CAH)</strong> sur un tableau disjonctif complet, en utilisant la distance du chi-deux et le critère de Ward pour construire les classes.</p><p class="modal-p">La sortie SAS ci-dessous présente le <strong>Tableau Disjonctif Complet — Races</strong> : chaque ligne correspond à un nœud de fusion (CL1, CL2…), avec l'effectif pondéré, les classes jointes et la <strong>perte d'inertie interclasse</strong> associée. Plus la perte d'inertie est élevée, plus la fusion est coûteuse — ce critère permet de choisir le nombre optimal de classes en repérant le "saut" le plus important dans la colonne <em>Perte d'inertie inter</em>.</p>`,
     comp:`<p class="modal-p">Choisir une méthode de classification adaptée · Construire et interpréter un dendrogramme · Déterminer le nombre optimal de classes · Caractériser et nommer les profils obtenus.</p>`,
-    tools:['CAH','proba','Dendrogramme','Macro SAS','Distances']},
+    img:'assets/cah-sas-output.png',
+    imgcap:'Sortie SAS — Tableau Disjonctif Complet : décomposition de la distance entre centres de gravité des classes jointes (CAH, critère de Ward)',
+    tools:['CAH','SAS','Dendrogramme','Inertie interclasse','Distances']},
   a3:{ref:'SAÉ 3.03 — Description et prévision de données temporelles',ttl:'Description et prévision de données temporelles',lv:'correct',
     desc:`<p class="modal-p">Supervisée par M. Renard, cette SAÉ porte sur l'analyse et la prévision du trafic du <strong>Port d'Anvers-Bruges</strong> à partir de données réelles de tonnage. L'objectif était de décomposer la série, modéliser ses composantes et produire des prévisions fiables.</p><p class="modal-p">Sur <strong>R Studio</strong>, j'ai utilisé les packages <code>forecast</code> et <code>ggplot2</code> pour visualiser la série, appliquer une décomposition , ajuster un modèle et évaluer ses résidus. Les prévisions pour 2025 ont été produites et comparées aux valeurs réelles.</p>`,
     comp:`<p class="modal-p">Identification de tendances et saisonnalités · Modélisation statistique des séries temporelles · Prédiction de valeurs futures · Évaluation des performances des modèles.</p>`,
